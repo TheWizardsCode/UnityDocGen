@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using WizardsCode.Tools.Editor.Linter;
@@ -14,6 +15,7 @@ namespace WizardsCode.Tools.Editor
         MonoBehaviour baseType;
         bool includeMonoBehaviours = true;
         bool includeScriptableObjects = true;
+        string typeFilter;
         
         [MenuItem("Window/Wizards Code/Linter")]
         static void Init()
@@ -29,6 +31,7 @@ namespace WizardsCode.Tools.Editor
             baseType = EditorGUILayout.ObjectField("Object containing a MonoBehaviour in your project", baseType, typeof(MonoBehaviour)) as MonoBehaviour;
             includeScriptableObjects = EditorGUILayout.Toggle("Include MonoBehaviours", includeMonoBehaviours);
             includeScriptableObjects = EditorGUILayout.Toggle("Include Scriptable Objects", includeScriptableObjects);
+            typeFilter = EditorGUILayout.TextField("Regex to filter types", typeFilter);
 
             if(GUILayout.Button("Analyze"))
             {
@@ -41,19 +44,25 @@ namespace WizardsCode.Tools.Editor
         /// </summary>
         private void Analyze(Assembly assembly)
         {
+
             if (includeMonoBehaviours)
             {
-                IEnumerable<Type> monoBehaviours = assembly.GetTypes().Where(t => typeof(MonoBehaviour).IsAssignableFrom(t));
-                foreach (Type t in monoBehaviours)
-                {
-                    ReportAllFieldsWithoutTooltip(t);
-                }
+                AnalyzeAssembly(typeof(MonoBehaviour), assembly);
             }
 
             if (includeScriptableObjects)
             {
-                IEnumerable<Type> monoBehaviours = assembly.GetTypes().Where(t => typeof(ScriptableObject).IsAssignableFrom(t));
-                foreach (Type t in monoBehaviours)
+                AnalyzeAssembly(typeof(ScriptableObject), assembly);
+            }
+        }
+
+        private void AnalyzeAssembly(Type type, Assembly assembly)
+        {
+            var regex = new Regex(typeFilter, RegexOptions.IgnoreCase);
+            IEnumerable<Type> monoBehaviours = assembly.GetTypes().Where(t => type.IsAssignableFrom(t));
+            foreach (Type t in monoBehaviours)
+            {
+                if (regex.IsMatch(t.Name))
                 {
                     ReportAllFieldsWithoutTooltip(t);
                 }
