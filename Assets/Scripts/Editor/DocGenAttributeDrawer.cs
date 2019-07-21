@@ -6,17 +6,6 @@ namespace WizardsCode.Tools.DocGen
     [CustomPropertyDrawer(typeof(DocGenAttribute), true)]
     public class DocGenAttributeDrawer : PropertyDrawer
     {
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float totalHeight = base.GetPropertyHeight(property, label);
-
-            return totalHeight;
-        }
-        private float DescriptionHeight
-        {
-            get { return EditorGUIUtility.singleLineHeight * 3; }
-        }
-
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             DocGenAttribute docgen = attribute as DocGenAttribute;
