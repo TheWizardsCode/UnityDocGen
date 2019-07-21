@@ -25,7 +25,7 @@ namespace WizardsCode.Tools.Editor
         [MenuItem("Window/Wizards Code/Documentation Generator")]
         static void Init()
         {
-            DocGenWindow window = (DocGenWindow)EditorWindow.GetWindow(typeof(DocGenWindow));
+            DocGenWindow window = (DocGenWindow)EditorWindow.GetWindow<DocGenWindow>("DocGen");
             window.Show();
         }
 
