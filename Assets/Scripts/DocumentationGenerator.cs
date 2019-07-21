@@ -18,7 +18,7 @@ namespace WizardsCode.Tools.DocGen
         string typeFilterRegex = "";
         string outputDirectory = "";
 
-        Dictionary<string, List<FieldRecord>> fields = new Dictionary<string, List<FieldRecord>>();
+        Dictionary<Type, List<FieldRecord>> fields = new Dictionary<Type, List<FieldRecord>>();
 
         public DocumentationGenerator(bool includeMonoBehaviours, bool includeScriptableObjects, string typeFilterRegex, string outputDirectory)
         {
@@ -65,7 +65,7 @@ namespace WizardsCode.Tools.DocGen
             }
 
             Directory.CreateDirectory(outputDirectory);
-            foreach (KeyValuePair<string, List<FieldRecord>> entries in fields)
+            foreach (KeyValuePair<Type, List<FieldRecord>> entries in fields)
             {
                 string filename = entries.Key + ".md";
                 string path = outputDirectory + "/" + filename;
@@ -112,7 +112,7 @@ namespace WizardsCode.Tools.DocGen
 
         private void ReportField(FieldRecord field)
         {
-            string key = field.info.ReflectedType.ToString();
+            Type key = field.info.ReflectedType;
             List<FieldRecord> entries;
             if (fields.TryGetValue(key, out entries))
             {
