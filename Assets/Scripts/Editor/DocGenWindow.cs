@@ -71,6 +71,8 @@ namespace WizardsCode.Tools.Editor
         private void Generate(Type type, Assembly assembly)
         {
             var regex = new Regex(typeFilter, RegexOptions.IgnoreCase);
+            fields.Clear();
+
             IEnumerable<Type> monoBehaviours = assembly.GetTypes().Where(t => type.IsAssignableFrom(t));
             foreach (Type t in monoBehaviours)
             {
@@ -86,7 +88,7 @@ namespace WizardsCode.Tools.Editor
                 string filename = entries.Key + ".txt";
                 string path = outputDirectory + "/" +  filename;
 
-                StreamWriter writer = new StreamWriter(path, false);
+                StreamWriter writer = new StreamWriter(path);
                 writer.Write("# " + entries.Key + "\n\n");
 
                 foreach (FieldRecord entry in entries.Value)
@@ -96,7 +98,6 @@ namespace WizardsCode.Tools.Editor
                 writer.Close();
 
                 AssetDatabase.ImportAsset(path);
-                TextAsset asset = Resources.Load(filename) as TextAsset;
             }
         }
 
