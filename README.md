@@ -1,6 +1,6 @@
-# Documentation generator for Unity
+# Editor Documentation generator for Unity
 
-Generate documentation for MonoBehaviours and ScriptableObjects from `[Tooltip]` and other field attributes.
+Generate editor documentation for MonoBehaviours and ScriptableObjects from `[Tooltip]` and other field attributes.
 
 # Use
 
