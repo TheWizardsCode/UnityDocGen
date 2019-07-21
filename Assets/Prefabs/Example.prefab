@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1933961343975204}
+  m_RootGameObject: {fileID: 1178818103959606}
   m_IsPrefabParent: 1
---- !u!1 &1933961343975204
+--- !u!1 &1178818103959606
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4703788895092714}
-  - component: {fileID: 114557079184728818}
+  - component: {fileID: 4208522468530194}
+  - component: {fileID: 114739740251995724}
   m_Layer: 0
-  m_Name: TestLinterBaseObject
+  m_Name: Example
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4703788895092714
+--- !u!4 &4208522468530194
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1933961343975204}
+  m_GameObject: {fileID: 1178818103959606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,18 +40,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114557079184728818
+--- !u!114 &114739740251995724
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1933961343975204}
+  m_GameObject: {fileID: 1178818103959606}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ed0ddde35fedd47b93c43d2f5b7403, type: 3}
+  m_Script: {fileID: 11500000, guid: ae96be995aa27c048bd944ac574de8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PublicNoTooltip: No tooltip
-  PublicWithTooltip: With tooltip
-  privateWithSerializeFieldShouldAppear: Private fields with SerializeField attribute
-    should have a tooltip
+  publicString: This is the default value of this string.
+  privateSerilizedString: This is the default value.

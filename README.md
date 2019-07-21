@@ -1,13 +1,14 @@
-A simple linter for Unity projects. At present it simply looks for serialized fields that do not have a ToolTip and reports them in the log console as warnings.
+# Documentation generator for Unity
 
-Note this is not, nor will it ever be, a complete linter.
+Generate documentation for MonoBehaviours and ScriptableObjects from `[Tooltip]` and other field attributes.
 
 # Use
 
-  1. Import the linter code into your project
-  2. `Window -> Wizards Code -> Linter`
+  1. Import the DocGen code into your project
+  2. `Window -> Wizards Code -> Documentation Generator`
   3. Drag an object from your project that contains one of your MonoBehaviours into 'Object Containing MonoBehavior' field
-  4. [OPTIONAL] Add a REGEX to filter the results reported
-  5. Click `Analyze`
-  6. Review any warnings in the Debug Log
+  4. [OPTIONAL] Add a REGEX to filter the files to be processed
+  5. Click `Generate`
+  6. Review any warnings in the Debug Log - this will tell you of any fields that are not documented yet
+  7, Review the documentation generated in the directory set in the editor window (defaults to `Assets/Documentation/Generated`)
 
