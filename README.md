@@ -11,21 +11,32 @@ The system outputs a relatively simple markdown file documenting all fields that
 
 
 ## Public String (String)
+
 This is a public string field with a tooltip (you are reading it now).
+
+Default Value     : "This is the default value of this string."
 
 
 ## Float Field (Single)
+
 Field with a range.
 
-Value must be between 0 and 1.5.
+Default Value     : 0.5
+Range             : 0 and 1.5
 
 
 ## Public But Undocumented String (String)
+
 No tooltip provided.
+
+Default Value     : "This public string does not have a tooltip."
 
 
 ## Private Serialized String (String)
+
 This is a private field, but it has the SerializeField attribute. This text comes from the tooltip for the field.
+
+Default Value     : "This is the default value."
 ```
 
 # Use
