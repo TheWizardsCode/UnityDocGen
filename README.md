@@ -2,6 +2,32 @@
 
 Generate editor documentation for MonoBehaviours and ScriptableObjects from `[Tooltip]` and other field attributes.
 
+# Output
+
+The system outputs a relatively simple markdown file documenting all fields that are serialized by the Editor, for example:
+
+```
+# WizardsCode.Tools.Editor.DocGen.ExampleMonoBehaviour
+
+
+## Public String (String)
+This is a public string field with a tooltip (you are reading it now).
+
+
+## Float Field (Single)
+Field with a range.
+
+Value must be between 0 and 1.5.
+
+
+## Public But Undocumented String (String)
+No tooltip provided.
+
+
+## Private Serialized String (String)
+This is a private field, but it has the SerializeField attribute. This text comes from the tooltip for the field.
+```
+
 # Use
 
   1. Import the DocGen code into your project
