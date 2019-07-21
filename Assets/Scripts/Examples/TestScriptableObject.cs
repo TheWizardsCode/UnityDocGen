@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WizardsCode.Tools.Editor.Linter
+namespace WizardsCode.Tools.DocGen
 {
     public class TestScriptableObject : ScriptableObject
     {
