@@ -106,20 +106,26 @@ namespace WizardsCode.Tools.Editor
         /// <typeparam name="T"></typeparam>
         private void ExtractAllEditorAccessibleFields(Type type)
         {
+
+            GameObject defaultsGo = new GameObject();
+
             IEnumerable<FieldInfo> publicFields = type.GetFields();
 
             foreach (FieldInfo info in publicFields)
             {
-                ReportField(new FieldRecord(info));
+                ReportField(new FieldRecord(info, defaultsGo));
             }
+
+            GameObject.DestroyImmediate(defaultsGo);
 
             IEnumerable<FieldInfo> privateFields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(prop => Attribute.IsDefined(prop, typeof(SerializeField)));
 
             foreach (FieldInfo info in privateFields)
             {
-                ReportField(new FieldRecord(info));
+                ReportField(new FieldRecord(info, defaultsGo));
             }
+
         }
 
         private void ReportField(FieldRecord field)
@@ -152,10 +158,22 @@ namespace WizardsCode.Tools.Editor
         internal FieldInfo info;
         internal TooltipAttribute tooltip;
         internal RangeAttribute range;
+        internal object defaultValue;
 
-        internal FieldRecord(FieldInfo info)
+        internal FieldRecord(FieldInfo info, GameObject defaultsGo)
         {
             this.info = info;
+
+            if (info.ReflectedType == typeof(MonoBehaviour))
+            {
+                UnityEngine.Object obj = defaultsGo.AddComponent(info.ReflectedType);
+                this.defaultValue = info.GetValue(obj);
+            } else
+            {
+                ScriptableObject instance = ScriptableObject.CreateInstance(info.ReflectedType);
+                this.defaultValue = info.GetValue(instance);
+                ScriptableObject.DestroyImmediate(instance);
+            }
 
             object[] attributes = info.GetCustomAttributes(true);
             foreach (object attr in attributes)
@@ -200,16 +218,30 @@ namespace WizardsCode.Tools.Editor
 
             if (tooltip != null)
             {
-                doc += "\n" + tooltip.tooltip;
+                doc += "\n\n" + tooltip.tooltip;
             } 
             else
             {
-                doc += "\n" + "No tooltip provided.";
+                doc += "\n\n" + "No tooltip provided.";
+            }
+
+            if (defaultValue != null)
+            {
+                doc += "\n\n";
+                if (info.FieldType == typeof(string))
+                {
+                    doc += "Default Value     : \"" + defaultValue + "\"";
+                }
+                else
+                {
+                    doc += "Default Value     : " + defaultValue;
+                }
             }
 
             if (range != null)
             {
-                doc += "\n\nValue must be between " + range.min + " and " + range.max + ".";
+                doc += "\n";
+                doc += "Range             : " + range.min + " and " + range.max;
             }
 
             doc += "\n";
