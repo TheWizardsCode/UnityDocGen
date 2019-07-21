@@ -55,8 +55,8 @@ namespace WizardsCode.Tools.DocGen
             var regex = new Regex(typeFilterRegex, RegexOptions.IgnoreCase);
             fields.Clear();
 
-            IEnumerable<Type> monoBehaviours = assembly.GetTypes().Where(t => type.IsAssignableFrom(t));
-            foreach (Type t in monoBehaviours)
+            IEnumerable<Type> types = assembly.GetTypes().Where(t => type.IsAssignableFrom(t));
+            foreach (Type t in types)
             {
                 if (regex.IsMatch(t.Name))
                 {
