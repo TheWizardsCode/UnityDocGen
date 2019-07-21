@@ -1,18 +1,28 @@
 # Editor Documentation generator for Unity
 
-Generate editor documentation for MonoBehaviours and ScriptableObjects from `[Tooltip]` and other field attributes.
+Generate in-editor documentation for MonoBehaviours and ScriptableObjects. This documentation is displayed in the Editor as well as enabling markdown documentation to be generated.
 
-# Output
+Adds a `[DocGen]` attribute that allows more documentation text to be added to a MonoBehaviour, ScriptableObject or a field. This text will be displayed in the inspector as well as in the generated documentation.
 
-The system outputs a relatively simple markdown file documenting all fields that are serialized by the Editor, for example:
+# Markdown Output
+
+The system outputs a markdown file documenting all MonoBehaviours, ScriptableOjects and any fields that are serialized by the Editor. This documentation will contain useful information captured in `[Tooltip]` and other field attributes. Additional detail can be provided using a new `[DocGen]` attribute.
+
+ For example:
 
 ```
-# WizardsCode.Tools.Editor.DocGen.ExampleMonoBehaviour
+# WizardsCode.Tools.DocGen.ExampleMonoBehaviour
+
+DocGen adds a DocGen attribute that allows more documentation text to be added to a MonoBehaviour or ScriptableObject. This text will be displayed in the inspector as well as in the generated documentation.
 
 
 ## Public String (String)
 
 This is a public string field with a tooltip (you are reading it now).
+
+### Details
+
+Using the DocGen attribute you can add additional documentation to a field that doesn't fit into a ToolTip. This content will only be visible if the field is expanded. The content will also appear in the generated documentation. 
 
 Default Value     : "This is the default value of this string."
 
@@ -37,15 +47,36 @@ Default Value     : "This public string does not have a tooltip."
 This is a private field, but it has the SerializeField attribute. This text comes from the tooltip for the field.
 
 Default Value     : "This is the default value."
+
 ```
 
 # Use
 
   1. Import the DocGen code into your project
-  2. `Window -> Wizards Code -> Documentation Generator`
-  3. Drag an object from your project that contains one of your MonoBehaviours into 'Object Containing MonoBehavior' field
-  4. [OPTIONAL] Add a REGEX to filter the files to be processed
-  5. Click `Generate`
-  6. Review any warnings in the Debug Log - this will tell you of any fields that are not documented yet
-  7, Review the documentation generated in the directory set in the editor window (defaults to `Assets/Documentation/Generated`)
+
+## In-Editor Documentation
+
+Add `[DocGen("Your documentation text here")]` to your MonoBehaviour and ScriptableObjects and Serilized Fields within them as desired. For example:
+
+```c#
+[DocGen("This is a simple example of documenting a MonoBehaviour.")]
+public class DocGenExample : MonoBehaviour {
+    [DocGen("This is a simple example of documenting a public field.")]
+    public string aField;
+}
+```
+
+The DocGen attribute values will be displayed in the inspector. The class attribute will be shown at the top of the inspector while the field attribute will be shown if the field is expanded.
+
+## Generate Markdown Documentation
+
+  1. `Window -> Wizards Code -> Documentation Generator`
+  2. Drag an object from your project that contains one of your MonoBehaviours into 'Object Containing MonoBehavior' field
+  3. [OPTIONAL] Add a REGEX to filter the files to be processed
+  4. Click `Generate`
+
+Your documentation will generated in the directory set in the editor window (defaults to `Assets/Documentation/Generated`)
+
+Note that the Debug Log will contain warnings for all fields that do not have a tooltip.
+
 

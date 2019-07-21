@@ -73,6 +73,21 @@ namespace WizardsCode.Tools.DocGen
                 StreamWriter writer = new StreamWriter(path);
                 writer.Write("# " + entries.Key + "\n\n");
 
+                Attribute[] attrs = Attribute.GetCustomAttributes(entries.Key, typeof(Attribute));
+                for (int i = 0; i < attrs.Length; i++)
+                {
+                    switch (attrs[i].GetType().Name)
+                    {
+                        case "DocGenAttribute":
+                            DocGenAttribute docgen = (DocGenAttribute)attrs[i];
+                            writer.Write( docgen.Description+ "\n\n");
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+
                 foreach (FieldRecord entry in entries.Value)
                 {
                     writer.WriteLine(entry.ToMarkdown());
@@ -141,6 +156,7 @@ namespace WizardsCode.Tools.DocGen
             internal TooltipAttribute tooltip;
             internal RangeAttribute range;
             internal object defaultValue;
+            internal DocGenAttribute docGenAttr;
 
             internal FieldRecord(FieldInfo info, GameObject defaultsGo)
             {
@@ -180,6 +196,12 @@ namespace WizardsCode.Tools.DocGen
                         continue;
                     }
 
+                    if (attr is DocGenAttribute)
+                    {
+                        docGenAttr = attr as DocGenAttribute;
+                        continue;
+                    }
+
                     Debug.LogWarning("Unable to document attribute type " + attr.GetType());
                 }
             }
@@ -206,6 +228,12 @@ namespace WizardsCode.Tools.DocGen
                 else
                 {
                     doc += "\n\n" + "No tooltip provided.";
+                }
+
+                if (docGenAttr != null)
+                {
+                    doc += "\n\n### Details";
+                    doc += "\n\n" + docGenAttr.Description;
                 }
 
                 if (defaultValue != null)
