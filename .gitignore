@@ -40,7 +40,4 @@ ProjectSettings/
 # Files with keys or other private info
 PRIVATE_**
 
-# Unity Doc Gen
-Assets/Documentation
-Assets/Documentation.meta
 

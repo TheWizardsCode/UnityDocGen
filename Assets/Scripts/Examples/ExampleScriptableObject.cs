@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace WizardsCode.Tools.DocGen
 {
-    public class TestMonoBehaviour : MonoBehaviour
+    [DocGen("The DocGen attribute also works for ScriptableObjects.")]
+    public class ExampleScriptableObject : ScriptableObject
     {
         public string PublicNoTooltip = "No tooltip";
 
         [Tooltip("This is a property with a tooltip")]
+        [DocGen("The DocGen attribute also works for ScriptableObjects.")]
         public string PublicWithTooltip = "With tooltip";
 
         [SerializeField]
