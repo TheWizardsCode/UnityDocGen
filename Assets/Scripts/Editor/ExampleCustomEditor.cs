@@ -6,7 +6,7 @@ using UnityEngine;
 namespace WizardsCode.Tools.DocGen
 {
     [CustomEditor(typeof(ExampleMonoBehaviour), true)]
-    public class ExampleCustomEditor : Editor
+    public class ExampleCustomEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

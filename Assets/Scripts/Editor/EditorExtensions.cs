@@ -6,7 +6,7 @@ namespace WizardsCode.Tools.DocGen
 {
     public static class EditorExtensions
     {
-        public static void DrawDocGenAttributes(this Editor editor)
+        public static void DrawDocGenAttributes(this UnityEditor.Editor editor)
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(editor.target.GetType(), typeof(Attribute));
 
