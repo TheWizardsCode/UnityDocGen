@@ -1,24 +1,15 @@
-﻿using System;
+﻿
+using System;
 using UnityEditor;
-using UnityEngine;
 
 namespace WizardsCode.Tools.DocGen
 {
-    [CanEditMultipleObjects]
-    [CustomEditor(typeof(UnityEngine.Object), true)]
-    public class DocGenAttributeEditor : Editor
+    public static class EditorExtensions
     {
-        Attribute[] attributes;
-
-        private void OnEnable()
+        public static void DrawDocGenAttributes(this Editor editor)
         {
-            attributes = Attribute.GetCustomAttributes(this.target.GetType(), typeof(Attribute));
-        }
+            Attribute[] attributes = Attribute.GetCustomAttributes(editor.target.GetType(), typeof(Attribute));
 
-        public override void OnInspectorGUI()
-        {
-
-            //.Cast<CustomAttribute>().ToArray()
             for (int i = 0; i < attributes.Length; i++)
             {
                 switch (attributes[i].GetType().Name)
@@ -30,9 +21,8 @@ namespace WizardsCode.Tools.DocGen
                     default:
                         break;
                 }
-                
+
             }
-            this.DrawDefaultInspector();
         }
     }
 }

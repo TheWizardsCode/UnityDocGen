@@ -66,7 +66,18 @@ public class DocGenExample : MonoBehaviour {
 }
 ```
 
-The DocGen attribute values will be displayed in the inspector. The class attribute will be shown at the top of the inspector while the field attribute will be shown if the field is expanded.
+The DocGen attribute values for fields will now be displayed in the inspector (expand the field to see them). 
+
+Assuming you are not using a CustomEditor for your MonoBehaviour, the class attribute will be shown at the top of the inspector. If you are using a CustomEditor then you need to add a call to the `DrawDocGenAttributes()` extension method at the beginning of `OnInspectorGUI()` method, for example:
+
+```c#
+public override void OnInspectorGUI()
+{
+    this.DrawDocGenAttributes();
+
+    // Your customer inspector code goes here
+}
+```
 
 ## Generate Markdown Documentation
 
