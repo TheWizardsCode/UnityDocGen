@@ -66,7 +66,7 @@ namespace WizardsCode.Tools.DocGen
             var regex = new Regex(typeFilterRegex, RegexOptions.IgnoreCase);
             fields.Clear();
 
-            IEnumerable<Type> types = assembly.GetTypes().Where(t => type.IsAssignableFrom(t));
+            IEnumerable<Type> types = assembly.GetTypes().Where(t => !t.IsAbstract && type.IsAssignableFrom(t));
             foreach (Type t in types)
             {
                 if (regex.IsMatch(t.Name))
