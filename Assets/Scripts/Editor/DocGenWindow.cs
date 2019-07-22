@@ -25,7 +25,7 @@ namespace WizardsCode.Tools.DocGen
             GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
             baseType = EditorGUILayout.ObjectField("Object containing a MonoBehaviour in your project", baseType, typeof(MonoBehaviour)) as MonoBehaviour;
-            includeScriptableObjects = EditorGUILayout.Toggle("Include MonoBehaviours", includeMonoBehaviours);
+            includeMonoBehaviours = EditorGUILayout.Toggle("Include MonoBehaviours", includeMonoBehaviours);
             includeScriptableObjects = EditorGUILayout.Toggle("Include Scriptable Objects", includeScriptableObjects);
             generateTooltipToDoitems = EditorGUILayout.Toggle("Generate Todo for missing Tooltips", generateTooltipToDoitems);
             outputDirectory = EditorGUILayout.TextField("Output Directory", outputDirectory);
