@@ -1,5 +1,4 @@
 # WizardsCode.Tools.DocGen.ExampleMonoBehaviour
-
 DocGen adds a DocGen attribute that allows more documentation text to be added to an attribute. This text will be displayed in the inspector via a PropertyDrawer as well as in the generated documentation.
 
 

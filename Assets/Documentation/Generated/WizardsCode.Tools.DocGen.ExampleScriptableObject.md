@@ -1,5 +1,4 @@
 # WizardsCode.Tools.DocGen.ExampleScriptableObject
-
 The DocGen attribute also works for ScriptableObjects.
 
 

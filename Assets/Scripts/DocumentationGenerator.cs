@@ -34,15 +34,25 @@ namespace WizardsCode.Tools.DocGen
         public void Generate(Assembly assembly)
         {
 
+
+            Directory.CreateDirectory(outputDirectory);
+
+            StreamWriter readmeWriter = new StreamWriter(outputDirectory + "/README.md");
+            readmeWriter.Write("# Editor Documentation for " + Application.productName + "\n\n");
+            
             if (includeMonoBehaviours)
             {
-                Generate(typeof(MonoBehaviour), assembly, typeFilterRegex, outputDirectory);
+                readmeWriter.Write("## MonoBehaviours in " + Application.productName + "\n\n");
+                Generate(typeof(MonoBehaviour), assembly, typeFilterRegex, outputDirectory, readmeWriter);
             }
 
             if (includeScriptableObjects)
             {
-                Generate(typeof(ScriptableObject), assembly, typeFilterRegex, outputDirectory);
+                readmeWriter.Write("\n## ScriptableObjects in " + Application.productName + "\n\n");
+                Generate(typeof(ScriptableObject), assembly, typeFilterRegex, outputDirectory, readmeWriter);
             }
+            
+            readmeWriter.Close();
         }
 
         /// <summary>
@@ -50,7 +60,7 @@ namespace WizardsCode.Tools.DocGen
         /// </summary>
         /// <param name="type"></param>
         /// <param name="assembly"></param>
-        private void Generate(Type type, Assembly assembly, string typeFilterRegex, string outputDirectory)
+        private void Generate(Type type, Assembly assembly, string typeFilterRegex, string outputDirectory, StreamWriter readmeWriter)
         {
             var regex = new Regex(typeFilterRegex, RegexOptions.IgnoreCase);
             fields.Clear();
@@ -64,14 +74,15 @@ namespace WizardsCode.Tools.DocGen
                 }
             }
 
-            Directory.CreateDirectory(outputDirectory);
             foreach (KeyValuePair<Type, List<FieldRecord>> entries in fields)
             {
                 string filename = entries.Key + ".md";
                 string path = outputDirectory + "/" + filename;
 
-                StreamWriter writer = new StreamWriter(path);
-                writer.Write("# " + entries.Key + "\n\n");
+                readmeWriter.WriteLine("  * [" + entries.Key + "](./" + entries.Key + ".md)");
+
+                StreamWriter typeWriter = new StreamWriter(path);
+                typeWriter.Write("# " + entries.Key + "\n");
 
                 Attribute[] attrs = Attribute.GetCustomAttributes(entries.Key, typeof(Attribute));
                 for (int i = 0; i < attrs.Length; i++)
@@ -80,7 +91,7 @@ namespace WizardsCode.Tools.DocGen
                     {
                         case "DocGenAttribute":
                             DocGenAttribute docgen = (DocGenAttribute)attrs[i];
-                            writer.Write( docgen.Description+ "\n\n");
+                            typeWriter.Write( docgen.Description + "\n\n");
                             break;
                         default:
                             break;
@@ -90,9 +101,10 @@ namespace WizardsCode.Tools.DocGen
 
                 foreach (FieldRecord entry in entries.Value)
                 {
-                    writer.WriteLine(entry.ToMarkdown());
+                    typeWriter.WriteLine(entry.ToMarkdown());
                 }
-                writer.Close();
+
+                typeWriter.Close();
 
                 AssetDatabase.ImportAsset(path);
             }
