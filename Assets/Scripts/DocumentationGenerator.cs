@@ -128,7 +128,14 @@ namespace WizardsCode.Tools.DocGen
 
         private string GetRelativeDirPath(Type type)
         {
-            return type.Namespace.Replace('.', '/') + "/";
+            if (type.Namespace != null)
+            {
+                return type.Namespace.Replace('.', '/') + "/";
+            }
+            else
+            {
+                return "";
+            }
         }
  
         private static string GetFileName(Type type)
