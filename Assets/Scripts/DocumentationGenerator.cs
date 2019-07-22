@@ -15,16 +15,21 @@ namespace WizardsCode.Tools.DocGen
     {
         bool includeMonoBehaviours = true;
         bool includeScriptableObjects = true;
-        string typeFilterRegex = "";
+        private bool generateTooltipToDoItems = true;
+        string includeRegex = "";
+        string excludeRegex = "";
         string outputDirectory = "";
 
         Dictionary<Type, List<FieldRecord>> fields = new Dictionary<Type, List<FieldRecord>>();
 
-        public DocumentationGenerator(bool includeMonoBehaviours, bool includeScriptableObjects, string typeFilterRegex, string outputDirectory)
+
+        public DocumentationGenerator(bool includeMonoBehaviours, bool includeScriptableObjects, bool generateTooltipToDoItems, string includeRegex, string excludeRegex, string outputDirectory)
         {
             this.includeMonoBehaviours = includeMonoBehaviours;
             this.includeScriptableObjects = includeScriptableObjects;
-            this.typeFilterRegex = typeFilterRegex;
+            this.generateTooltipToDoItems = generateTooltipToDoItems;
+            this.includeRegex = includeRegex;
+            this.excludeRegex = excludeRegex;
             this.outputDirectory = outputDirectory;
         }
 
@@ -42,13 +47,13 @@ namespace WizardsCode.Tools.DocGen
             if (includeMonoBehaviours)
             {
                 readmeWriter.Write("## MonoBehaviours in " + Application.productName + "\n\n");
-                Generate(typeof(MonoBehaviour), assembly, typeFilterRegex, readmeWriter);
+                Generate(typeof(MonoBehaviour), assembly, readmeWriter);
             }
 
             if (includeScriptableObjects)
             {
                 readmeWriter.Write("\n## ScriptableObjects in " + Application.productName + "\n\n");
-                Generate(typeof(ScriptableObject), assembly, typeFilterRegex, readmeWriter);
+                Generate(typeof(ScriptableObject), assembly, readmeWriter);
             }
             
             readmeWriter.Close();
@@ -61,15 +66,16 @@ namespace WizardsCode.Tools.DocGen
         /// </summary>
         /// <param name="type"></param>
         /// <param name="assembly"></param>
-        private void Generate(Type type, Assembly assembly, string typeFilterRegex, StreamWriter readmeWriter)
+        private void Generate(Type type, Assembly assembly, StreamWriter readmeWriter)
         {
-            var regex = new Regex(typeFilterRegex, RegexOptions.IgnoreCase);
+            var incRegex = new Regex(includeRegex, RegexOptions.IgnoreCase);
+            var excRegex = new Regex(excludeRegex, RegexOptions.IgnoreCase);
             fields.Clear();
 
             IEnumerable<Type> types = assembly.GetTypes().Where(t => !t.IsAbstract && type.IsAssignableFrom(t));
             foreach (Type t in types)
             {
-                if (regex.IsMatch(t.Name))
+                if (incRegex.IsMatch(t.FullName) && !excRegex.IsMatch(t.FullName))
                 {
                     ExtractAllEditorAccessibleFields(t);
                 }
@@ -186,9 +192,9 @@ namespace WizardsCode.Tools.DocGen
                 fields.Add(key, entries);
             }
 
-            if (field.tooltip == null)
+            if (generateTooltipToDoItems && field.tooltip == null)
             {
-                Debug.LogWarning(field.info.Name + " in " + field.info.ReflectedType + " needs a ToolTip.");
+                Debug.LogWarning(field.info.Name + " in " + field.info.ReflectedType + " needs a ToolTip.", field.script);
             }
         }
 
@@ -201,6 +207,7 @@ namespace WizardsCode.Tools.DocGen
             internal TooltipAttribute tooltip;
             internal RangeAttribute range;
             internal object defaultValue;
+            internal MonoScript script;
             internal DocGenAttribute docGenAttr;
 
             internal FieldRecord(FieldInfo info, GameObject defaultsGo)
@@ -209,13 +216,15 @@ namespace WizardsCode.Tools.DocGen
 
                 if (info.ReflectedType == typeof(MonoBehaviour))
                 {
-                    UnityEngine.Object obj = defaultsGo.AddComponent(info.ReflectedType);
-                    this.defaultValue = info.GetValue(obj);
+                    MonoBehaviour obj = defaultsGo.AddComponent(info.ReflectedType) as MonoBehaviour;
+                    defaultValue = info.GetValue(obj);
+                    this.script = MonoScript.FromMonoBehaviour(obj);
                 }
                 else
                 {
                     ScriptableObject instance = ScriptableObject.CreateInstance(info.ReflectedType);
                     this.defaultValue = info.GetValue(instance);
+                    this.script = MonoScript.FromScriptableObject(instance);
                     ScriptableObject.DestroyImmediate(instance);
                 }
 

@@ -9,8 +9,9 @@ namespace WizardsCode.Tools.DocGen
         MonoBehaviour baseType;
         bool includeMonoBehaviours = true;
         bool includeScriptableObjects = true;
-        bool generateTooltipToDoitems = true;
-        string typeFilter = "";
+        bool generateTooltipToDoItems = true;
+        string includeRegex = "";
+        string excludeRegex = ".*DocGen.*";
         string outputDirectory = "Assets/Documentation/Generated";
 
         [MenuItem("Window/Wizards Code/Documentation Generator")]
@@ -27,13 +28,14 @@ namespace WizardsCode.Tools.DocGen
             baseType = EditorGUILayout.ObjectField("Object containing a MonoBehaviour in your project", baseType, typeof(MonoBehaviour)) as MonoBehaviour;
             includeMonoBehaviours = EditorGUILayout.Toggle("Include MonoBehaviours", includeMonoBehaviours);
             includeScriptableObjects = EditorGUILayout.Toggle("Include Scriptable Objects", includeScriptableObjects);
-            generateTooltipToDoitems = EditorGUILayout.Toggle("Generate Todo for missing Tooltips", generateTooltipToDoitems);
+            generateTooltipToDoItems = EditorGUILayout.Toggle("Generate Todo for missing Tooltips", generateTooltipToDoItems);
             outputDirectory = EditorGUILayout.TextField("Output Directory", outputDirectory);
-            typeFilter = EditorGUILayout.TextField("Regex to filter types", typeFilter);
+            includeRegex = EditorGUILayout.TextField("Include filter (Regex)", includeRegex);
+            excludeRegex = EditorGUILayout.TextField("Exclude filter (Regex)", excludeRegex);
 
             if (GUILayout.Button("Generate"))
             {
-                DocumentationGenerator generator = new DocumentationGenerator(includeMonoBehaviours, includeScriptableObjects, typeFilter, outputDirectory);
+                DocumentationGenerator generator = new DocumentationGenerator(includeMonoBehaviours, includeScriptableObjects, generateTooltipToDoItems, includeRegex, excludeRegex, outputDirectory);
                 generator.Generate(baseType.GetType().Assembly);
             }
         }
