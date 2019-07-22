@@ -80,7 +80,7 @@ namespace WizardsCode.Tools.DocGen
                 string dirPath = GetDirPath(entries.Key);
                 Directory.CreateDirectory(dirPath);
 
-                readmeWriter.WriteLine("  * [" + entries.Key + "](./" + GetFullPath(entries.Key) + ".md)");
+                readmeWriter.WriteLine("  * [" + entries.Key + "](./" + GetRelativePath(entries.Key) + ")");
 
                 StreamWriter typeWriter = new StreamWriter(GetFullPath(entries.Key));
                 typeWriter.Write("# " + entries.Key + "\n");
@@ -118,11 +118,19 @@ namespace WizardsCode.Tools.DocGen
 
         private string GetDirPath(Type type)
         {
-            string path = outputDirectory + "/";
-            path += type.Namespace.Replace('.', '/');
-            return path + "/";
+            return outputDirectory + "/" + GetRelativeDirPath(type);
         }
 
+        private string GetRelativePath(Type type)
+        {
+            return GetRelativeDirPath(type) + GetFileName(type);
+        }
+
+        private string GetRelativeDirPath(Type type)
+        {
+            return type.Namespace.Replace('.', '/') + "/";
+        }
+ 
         private static string GetFileName(Type type)
         {
             return type.Name + ".md";

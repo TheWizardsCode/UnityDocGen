@@ -2,8 +2,8 @@
 
 ## MonoBehaviours in UnityDocGen
 
-  * [WizardsCode.Tools.DocGen.ExampleMonoBehaviour](./Assets/Documentation/Generated/WizardsCode/Tools/DocGen/ExampleMonoBehaviour.md.md)
+  * [WizardsCode.Tools.DocGen.ExampleMonoBehaviour](./WizardsCode/Tools/DocGen/ExampleMonoBehaviour.md)
 
 ## ScriptableObjects in UnityDocGen
 
-  * [WizardsCode.Tools.DocGen.ExampleScriptableObject](./Assets/Documentation/Generated/WizardsCode/Tools/DocGen/ExampleScriptableObject.md.md)
+  * [WizardsCode.Tools.DocGen.ExampleScriptableObject](./WizardsCode/Tools/DocGen/ExampleScriptableObject.md)
