@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WizardsCode.Tools.DocGen
 {
-    [AttributeUsage(System.AttributeTargets.All,
+    [AttributeUsage(AttributeTargets.All,
                    AllowMultiple = false,
                    Inherited = true)]
     public class DocGenAttribute : PropertyAttribute
