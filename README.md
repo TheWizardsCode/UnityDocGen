@@ -1,3 +1,6 @@
+NOTE The code in this project has been moved into the EditorPowerScripts repository. This repository is now archived.
+
+
 # Editor Documentation generator for Unity
 
 Generate in-editor documentation for MonoBehaviours and ScriptableObjects. This documentation is displayed in the Editor as well as enabling markdown documentation to be generated.
